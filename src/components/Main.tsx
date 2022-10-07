@@ -11,20 +11,11 @@ enum GenderEnum {
   other = 'other',
 }
 
-export interface Inputs {
+export interface InputsProps {
   id: string;
   firstName: string;
   lastName: string;
   gender: GenderEnum;
-  initialDate: Date;
-  finalDate: Date;
-}
-
-export interface DefaultDataProps {
-  id: string;
-  firstName: string;
-  lastName: string;
-  gender: {};
   initialDate: Date;
   finalDate: Date;
 }
@@ -35,7 +26,7 @@ const initialData = [
     id: uuidv4(),
     firstName: 'Ps',
     lastName: 'Hero',
-    gender: 'female',
+    gender: GenderEnum.female,
     initialDate: new Date(),
     finalDate: addHours(new Date(), 1),
   },
@@ -43,7 +34,7 @@ const initialData = [
     id: uuidv4(),
     firstName: 'Chris',
     lastName: 'Griffing',
-    gender: 'male',
+    gender: GenderEnum.male,
     initialDate: new Date(),
     finalDate: addHours(new Date(), 1),
   },
@@ -51,37 +42,38 @@ const initialData = [
     id: uuidv4(),
     firstName: 'Train',
     lastName: 'Wreck',
-    gender: 'other',
+    gender: GenderEnum.female,
     initialDate: new Date(),
     finalDate: addHours(new Date(), 1),
   },
 ];
 
-const GREY = '#9E9E9E';
+const GREY = '9E9E9E';
 
 export function Main() {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<Inputs>();
+  } = useForm<InputsProps>();
 
-  const [myData, setMyData] = useState<DefaultDataProps[]>(initialData);
+  const [myData, setMyData] = useState<InputsProps[]>(initialData);
   // edit data form
   const [viewEditForm, setViewEditForm] = useState(false);
-  const [initialEditFormState, setInitialEditFormState] =
-    useState<DefaultDataProps>({
+  const [initialEditFormState, setInitialEditFormState] = useState<InputsProps>(
+    {
       id: '',
       firstName: '',
       lastName: '',
-      gender: '',
+      gender: GenderEnum.female,
       initialDate: new Date(),
       finalDate: addHours(new Date(), 1),
-    });
+    }
+  );
   const [currentData, setCurrentData] =
-    useState<DefaultDataProps>(initialEditFormState);
+    useState<InputsProps>(initialEditFormState);
 
-  const editFormValue = (input: any) => {
+  const editFormValue = (input: InputsProps) => {
     setViewEditForm(true);
     setCurrentData({
       id: input.id,
@@ -93,29 +85,27 @@ export function Main() {
     });
   };
 
-  const updateData = (id: string, updatedData: any) => {
+  const updateData = (id: string, updatedData: InputsProps) => {
     setViewEditForm(false);
     setMyData(
-      myData.map((data: DefaultDataProps) =>
-        data.id === id ? updatedData : data
-      )
+      myData.map((data: InputsProps) => (data.id === id ? updatedData : data))
     );
   };
 
   // add new data
-  const addData = (data: any) => {
+  const addData = (data: InputsProps) => {
     data.id = uuidv4();
     setMyData([...myData, data]);
   };
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
+  const onSubmit: SubmitHandler<InputsProps> = (data) => {
     addData(data);
   };
   console.log(myData);
 
-  const deleteData = (id:any) => {
-    setMyData(myData.filter( (x: DefaultDataProps) =>  x.id !== id )) 
-  }
+  const deleteData = (id: string) => {
+    setMyData(myData.filter((x: InputsProps) => x.id !== id));
+  };
 
   return (
     <div>
@@ -191,7 +181,11 @@ export function Main() {
         )}
       </div>
       <div>
-        <DataTable editFormValue={editFormValue} myData={myData} deleteData={deleteData} />
+        <DataTable
+          editFormValue={editFormValue}
+          myData={myData}
+          deleteData={deleteData}
+        />
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import { DefaultDataProps } from './Main';
+import { InputsProps } from './Main';
 
 export const DataTable = (props: any) => {
   const GREY = '#9E9E9E';
@@ -26,7 +26,7 @@ export const DataTable = (props: any) => {
         </thead>
         <tbody>
           {props.myData &&
-            props.myData.map((x: DefaultDataProps) => (
+            props.myData.map((x: InputsProps) => (
               <tr key={x.id}>
                 <td>{x.id}</td>
                 <td>{x.firstName}</td>
@@ -35,7 +35,7 @@ export const DataTable = (props: any) => {
                 <td>{x.initialDate.toString()}</td>
                 <td>{x.finalDate.toString()}</td>
                 <td>
-                  <button onClick={() => props.editFormValue(x)} >edit</button>
+                  <button onClick={() => props.editFormValue(x)}>edit</button>
                   <button onClick={() => props.deleteData(x.id)}>delete</button>
                 </td>
               </tr>
