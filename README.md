@@ -1,2 +1,2 @@
-## Crud operations with TypeScript
+## CRUD operations with TypeScript
 just a simple crud operations
